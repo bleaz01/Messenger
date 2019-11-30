@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#8160FF',
+        backgroundColor: 'white',
     },
     background2: {
         flex: 1,
