@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "messenger",
-    "slug": "Messenger",
+    "name": "CodeMessenger",
+    "slug": "CodeMessenger",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
