@@ -1,14 +1,28 @@
-import React from 'react';
-import {StyleSheet, View, Text, TextInput, Image} from 'react-native';
+import React,{useState} from 'react';
+import {StyleSheet, View, Text, TextInput, Image,Button} from 'react-native';
+import { Actions } from 'react-native-router-flux';
+
 
 export default Login = () =>{
+
+    const [number, setNumber] = useState('')
+
+    
 
     return(
         <View style={styles.background}>
             <Image source={require('../assets/logoMessenger.png')}/>
-            <TextInput style={ styles.input}
-                placeholder='phone number'
+                <TextInput style={ styles.input }
+                    placeholder='phone number'
+                    type='tel'
+                    value={number}
+                    
+                />
+            <Button 
+                title='send'
+                onPress={e => Actions.Home()}
             />
+            <Text>{number}</Text>
         </View>
     )
 }
