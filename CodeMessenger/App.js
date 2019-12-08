@@ -4,9 +4,11 @@ import { Router,Stack,Scene} from 'react-native-router-flux'
 import Home from './Home';
 import Accueil from './Accueil';
 import Login from './Components/Login';
+import io from 'socket.io-client';
 
 export default class App extends React.Component{
 
+ 
   render(){
     return (
       <Router>

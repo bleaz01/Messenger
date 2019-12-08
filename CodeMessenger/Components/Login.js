@@ -14,15 +14,13 @@ export default Login = () =>{
             <Image source={require('../assets/logoMessenger.png')}/>
                 <TextInput style={ styles.input }
                     placeholder='phone number'
-                    type='tel'
-                    value={number}
-                    
+                    onChangeText={text => {setNumber(text)}} 
+                    value={number}     
                 />
             <Button 
                 title='send'
                 onPress={e => Actions.Home()}
             />
-            <Text>{number}</Text>
         </View>
     )
 }
