@@ -1,28 +1,52 @@
 import React,{useState} from 'react';
 import {StyleSheet, View, Text, TextInput, Image,Button} from 'react-native';
+import io from 'socket.io-client';
 import { Actions } from 'react-native-router-flux';
 
 
-export default Login = () =>{
+export default class Login extends React.Component{
 
-    const [number, setNumber] = useState('')
-
+    constructor(props){
+        super(props);{
+            this.state ={
+                user:[],
+               
+            };
     
+        }
+        console.log(this.state.user)
+      }
+    
+    
+      submitUser(){
+        this.socket = io('http://192.168.1.53:3000')
+        this.socket.emit('user', this.state.user)
+          this.setState({user:""})
+          Actions.Home()
+      }
+
+
+    render(){
 
     return(
         <View style={styles.background}>
             <Image source={require('../assets/logoMessenger.png')}/>
-                <TextInput style={ styles.input }
+            <View style={ styles.input }>
+                <TextInput 
                     placeholder='phone number'
-                    onChangeText={text => {setNumber(text)}} 
-                    value={number}     
+                    value={this.state.user}     
+                    onChangeText={user =>{
+                        this.setState({user})
+                    }}     
                 />
+            </View>
             <Button 
                 title='send'
-                onPress={e => Actions.Home()}
+                onPress={() =>this.submitUser()}
             />
         </View>
     )
+    }
 }
 
 const styles = StyleSheet.create({
