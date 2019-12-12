@@ -6,70 +6,70 @@ import {Entypo, FontAwesome} from '@expo/vector-icons'
 
 export default class Home extends Component{
     constructor(props){
-        super(props);{
-            this.state ={
-                user:'',
-                chatMessenger:'',
-                myMessages:[],
-                chatMessengers:[],
-                
-            };
+        super(props)
+        this.state ={
+            users:[],
+            chatMessenger:'', 
+            chatMessengers:[],
+            
+        };
             console.log(this.state.chatMessengers)
-    
-        }
-      }
-    
-      componentDidMount(){
-        this.socket = io('http://192.168.1.53:3000', {jsonp:false})
-        this.socket.on("message",msg =>{
-            this.setState({chatMessengers: [...this.state.chatMessengers, msg]})
+        this.socket = io('http://10.20.0.165:3000', {jsonp:false})
+
+        this.socket.on("message", msg =>{
+            this.setState({chatMessengers: [...this.state.chatMessengers,{user:msg.user,message:msg.message}]})
+            console.log(this.state.chatMessengers)
         })
+        this.socket.on('newUser', user =>{
+            this.setState({users:user})
+        })
+        
+    
+    }
+    
+    componentDidMount(){ 
+        let time = new Date()
+        let hours = time.getHours()
+        let min = time.getMinutes()
+        let sec = time.getSeconds()
+        let date = `${hours}:${min}:${sec}` 
+
        
-        this.socket.on('user', user =>{
-            this.setState({user: user})
-        })
       }
       submitMessage(){
 
         if(this.state.chatMessenger === ''){
-            console.log('salue')
+            console.log(user)
         }
         else{
-        this.socket.emit('message', this.state.chatMessenger)
-        this.setState({myMessage: [...this.state.myMessages,this.state.chatMessenger]})
         this.setState({chatMessenger:""})
-        let hours = new Date().getHours()
-        let min = new Date().getMinutes()
-        let date = hours + ':' + min 
-        this.setState({ sendTime: hours + ':' + min })  
+        let data ={user: this.state.users,message: this.state.chatMessenger}
+        this.socket.emit('message', JSON.stringify(data))
+        
         }
-      }
-
-      myMsg(){
-          <View>
-            <Text>{this.state.chatMessenger}</Text>
-          </View>
       }
     
       render(){
-            const myMessages= this.state.myMessages.map(myMessage => 
-                <View style={styles.boxMsg1}>
-                    <Text style={styles.boxMsgText}>{this.state.user + ' ' + this.state.sendTime}</Text>
-                    <Text style={styles.boxMsgText} key={myMessage}>{myMessages}</Text>
-                </View>)
+            // const myMessages= this.state.myMessages.map(myMessage => 
+            //     <View style={styles.boxMsg1}>
+            //         <Text style={styles.boxMsgText}>{this.state.user + ' ' + this.state.sendTime}</Text>
+            //         <Text style={styles.boxMsgText} key={myMessage}>{myMessages}</Text>
+            //     </View>)
 
             const idemMessage = this.state.chatMessengers.map(chatMessenger => 
                 <View style={styles.boxMsg}>
-                    <Text style={styles.boxMsgText}>{this.state.user + ' ' + this.state.sendTime}</Text>
-                    <Text style={styles.boxMsgText} key={chatMessenger}>{chatMessenger}</Text>
+                    <Text style={styles.boxMsgText}>{chatMessenger.user}</Text>
+                    <Text style={styles.boxMsgText} key={chatMessenger}>{chatMessenger.message}</Text>
                 </View>)
             
     return(
         <View style={styles.background}>
-            <ScrollView>
+            <View style={styles.screen}>
+                <ScrollView>
                 {idemMessage}
-                {myMessages}
-            </ScrollView>
+              {/* {idemMessage} */}
+                </ScrollView>
+            </View>
             <View  style={styles.input}>
                 <TextInput 
                     style={{color: 'white'}}
@@ -126,6 +126,11 @@ const styles = StyleSheet.create({
         margin:10,
         height:45,
         bottom:0,
+    },
+
+    screen: {
+
+        maxHeight:'90%'
     },
     icons: {
         flex:1,

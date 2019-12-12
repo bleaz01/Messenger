@@ -9,7 +9,7 @@ export default class Login extends React.Component{
     constructor(props){
         super(props);{
             this.state ={
-                user:[],
+                user:'',
                
             };
     
@@ -19,9 +19,10 @@ export default class Login extends React.Component{
     
     
       submitUser(){
-        this.socket = io('http://192.168.1.53:3000')
-        this.socket.emit('user', this.state.user)
-          this.setState({user:""})
+        this.socket = io('http://10.20.0.165:3000')
+        this.socket.emit('newUser', this.state.user)
+    
+          this.setState({user:''})
           Actions.Home()
       }
 
