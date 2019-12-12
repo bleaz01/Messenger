@@ -3,53 +3,6 @@ import {StyleSheet, View, Text, TextInput, Image,Button} from 'react-native';
 import io from 'socket.io-client';
 import { Actions } from 'react-native-router-flux';
 
-
-export default class Login extends React.Component{
-
-    constructor(props){
-        super(props);{
-            this.state ={
-                user:'',
-               
-            };
-    
-        }
-        console.log(this.state.user)
-      }
-    
-    
-      submitUser(){
-        this.socket = io('http://10.20.0.165:3000')
-        this.socket.emit('newUser', this.state.user)
-    
-          this.setState({user:''})
-          Actions.Home()
-      }
-
-
-    render(){
-
-    return(
-        <View style={styles.background}>
-            <Image source={require('../assets/logoMessenger.png')}/>
-            <View style={ styles.input }>
-                <TextInput 
-                    placeholder='phone number'
-                    value={this.state.user}     
-                    onChangeText={user =>{
-                        this.setState({user})
-                    }}     
-                />
-            </View>
-            <Button 
-                title='send'
-                onPress={() =>this.submitUser()}
-            />
-        </View>
-    )
-    }
-}
-
 const styles = StyleSheet.create({
 
     background: {
@@ -71,3 +24,32 @@ const styles = StyleSheet.create({
 
 
 })
+
+export default  Login = (props) =>{
+
+    const [user,setUser] = useState('');
+     
+      const submitUser = (e) => {
+        
+        this.socket = io('http://192.168.1.53:3000')
+        this.socket.emit('newUser', user)
+        Actions.Home({username:user})
+      }
+
+    return(
+        <View style={styles.background}>
+            <Image source={require('../assets/logoMessenger.png')}/>
+            <View style={ styles.input }>
+                <TextInput 
+                    placeholder='phone number'
+                    value={user}     
+                    onChangeText={value => setUser(value)}     
+                />
+            </View>
+            <Button 
+                title='send'
+                onPress={() =>submitUser()}
+            />
+        </View>
+    )
+}

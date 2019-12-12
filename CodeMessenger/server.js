@@ -14,23 +14,16 @@ const port = 3000;
 //coonection au server socket.io
 io.on('connection', (socket) =>{
 
-        socket.on('newUser', nickname =>{
-            //je recupére le nom des utilisateurs
-            socket.nickname = nickname  
-            console.log(socket.nickname)
-            //ajoute d 'un avatar (md5 sert a coller l'avatar au user)
-            // me.avatar = 'https://gravatar.com/avatar/' + md5(me.id) + '?s =50';
-            //envoi msg a tous les user (broadcast.emit)
-            io.sockets.emit('newUser', socket.nickname)
-        })
-    
+     
+   
         
         socket.on('message', msg =>{
             
             msg = JSON.parse(msg)
             console.log(msg)
             socket.broadcast.emit('message',msg )
-            socket.emit('message',msg)
+            // socket.emit('message',msg)
+           
         })
 
    

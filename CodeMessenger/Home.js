@@ -1,24 +1,29 @@
 import React,{Component} from 'react';
 import { ScrollView ,StyleSheet, View, Text, TextInput, Button} from 'react-native';
-import io from 'socket.io-client'
-import {Entypo, FontAwesome} from '@expo/vector-icons'
+import io from 'socket.io-client';
+import {Entypo, FontAwesome} from '@expo/vector-icons';
+import Markdown from 'react-native-markdown-package';
+import{md5} from 'MD5';
+
 
 
 export default class Home extends Component{
     constructor(props){
         super(props)
         this.state ={
-            users:[],
+            user:this.props.username,
             chatMessenger:'', 
             chatMessengers:[],
+            myMessengers:[]
             
         };
-            console.log(this.state.chatMessengers)
-        this.socket = io('http://10.20.0.165:3000', {jsonp:false})
+         console.log(this.state.myMessengers)
+        
+        this.socket = io('http://192.168.1.53:3000', {jsonp:false})
 
         this.socket.on("message", msg =>{
+            // msg.avatar = 'https://gravatar.com/avatar/' + md5(me.id) + '?s =50';
             this.setState({chatMessengers: [...this.state.chatMessengers,{user:msg.user,message:msg.message}]})
-            console.log(this.state.chatMessengers)
         })
         this.socket.on('newUser', user =>{
             this.setState({users:user})
@@ -26,16 +31,7 @@ export default class Home extends Component{
         
     
     }
-    
-    componentDidMount(){ 
-        let time = new Date()
-        let hours = time.getHours()
-        let min = time.getMinutes()
-        let sec = time.getSeconds()
-        let date = `${hours}:${min}:${sec}` 
-
-       
-      }
+   
       submitMessage(){
 
         if(this.state.chatMessenger === ''){
@@ -43,33 +39,36 @@ export default class Home extends Component{
         }
         else{
         this.setState({chatMessenger:""})
-        let data ={user: this.state.users,message: this.state.chatMessenger}
+        let data ={user: this.state.user,message: this.state.chatMessenger}
+        this.setState({myMessengers: [...this.state.myMessengers,{user:data.user,message:data.message}]})
         this.socket.emit('message', JSON.stringify(data))
+        
         
         }
       }
     
       render(){
-            // const myMessages= this.state.myMessages.map(myMessage => 
-            //     <View style={styles.boxMsg1}>
-            //         <Text style={styles.boxMsgText}>{this.state.user + ' ' + this.state.sendTime}</Text>
-            //         <Text style={styles.boxMsgText} key={myMessage}>{myMessages}</Text>
-            //     </View>)
-
-            const idemMessage = this.state.chatMessengers.map(chatMessenger => 
+            const meMessages = this.state.myMessengers.map((meMessage,i)=> {
+                return(    
+                <View style={styles.boxMsg1}>
+                    <Text style={styles.boxMsgText}>{meMessage.user}</Text>
+                    <Markdown style={styles.boxMsgText} key={i}>{meMessage.message}</Markdown>
+                </View>)})
+          
+            const idemMessage = this.state.chatMessengers.map((chatMessenger,i) => { 
+                return (
                 <View style={styles.boxMsg}>
-                    <Text style={styles.boxMsgText}>{chatMessenger.user}</Text>
-                    <Text style={styles.boxMsgText} key={chatMessenger}>{chatMessenger.message}</Text>
-                </View>)
+                    <Text style={styles.boxMsgText}>{chatMessenger.user}</Text> 
+                    <Markdown style={styles.boxMsgText} key={i}>{chatMessenger.message}</Markdown>
+                    
+                </View>)})
             
     return(
         <View style={styles.background}>
-            <View style={styles.screen}>
-                <ScrollView>
+            <ScrollView style={styles.screen}>
                 {idemMessage}
-              {/* {idemMessage} */}
-                </ScrollView>
-            </View>
+                {meMessages}
+            </ScrollView>
             <View  style={styles.input}>
                 <TextInput 
                     style={{color: 'white'}}
@@ -81,8 +80,7 @@ export default class Home extends Component{
             </View>
             <View style={styles.button}>
                 <Button
-                    
-                     onPress={() => this.submitMessage()}
+                    onPress={() => this.submitMessage()}
                     title='send'
                 />
             </View>
@@ -129,8 +127,10 @@ const styles = StyleSheet.create({
     },
 
     screen: {
-
-        maxHeight:'90%'
+        flex:1,
+        flexDirection: "column-reverse",
+        maxHeight:'90%',
+        margin:10
     },
     icons: {
         flex:1,
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     boxMsg: {
         flex: 1,
         marginTop: 5,
+        
         borderStyle: 'solid',
         borderRadius: 20,
         backgroundColor: 'white',
