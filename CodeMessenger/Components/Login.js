@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import {StyleSheet, View, Text, TextInput, Image,Button} from 'react-native';
 import io from 'socket.io-client';
+import {Entypo, Feather, FontAwesome} from '@expo/vector-icons';
 import { Actions } from 'react-native-router-flux';
 
 const styles = StyleSheet.create({
@@ -31,7 +32,7 @@ export default  Login = (props) =>{
      
       const submitUser = (e) => {
         
-        this.socket = io('http://192.168.1.53:3000')
+        this.socket = io('http://10.20.0.165:3000')
         this.socket.emit('newUser', user)
         Actions.Home({username:user})
       }
@@ -46,7 +47,7 @@ export default  Login = (props) =>{
                     onChangeText={value => setUser(value)}     
                 />
             </View>
-            <Button 
+            <Feather style={{marginTop:6}} name="send" size={50} color='black' 
                 title='send'
                 onPress={() =>submitUser()}
             />
