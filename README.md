@@ -13,7 +13,7 @@
 7. Contact
 
 ### Description
-Ce projet consiste à apprendre React-native et outile Expo pour créer la CERNA et tout sa dans le cadre de la formation Fullstack chez Becode.
+Ce projet consiste à apprendre React-native et Expo pour créer la CERNA , dans le cadre de la formation Fullstack chez Becode.
 
 ### Mock-up
 
