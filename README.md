@@ -34,9 +34,9 @@ Node.js
 
 ### Ressources
 
-[expo]("https://expo.io/")
-[react-native]("https://facebook.github.io/react-native/")
-[socket.io]("https://socket.io/")
+[expo](https://expo.io/)
+[react-native](https://facebook.github.io/react-native/)
+[socket.io](https://socket.io/)
 
 ### Contact
 Projet réalisé par Jeason Riguelle (ridjea@gmail.com) - contactez-moi!
