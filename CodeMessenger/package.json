@@ -25,7 +25,7 @@
     "react-native-router-flux": "^4.0.6",
     "react-native-web": "^0.11.7",
     "session.socket.io": "^0.2.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "socket.io-client": "^2.3.0",
     "uuid": "^3.3.3"
   },
